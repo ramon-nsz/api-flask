@@ -1,2 +1,0 @@
-teachers = [{"id":1, "nome":"Thiaguinho", "idade":36, "materia":"devops", "observacoes":"faltou todos os dias"},
-            {"id":2, "nome":"Marcello Pirozzelli", "idade":45, "materia":"soft skills", "observacoes":"fala demais"}]
