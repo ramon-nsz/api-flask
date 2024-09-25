@@ -1,20 +1,16 @@
 from flask import Blueprint, jsonify, request
-from dal.db import *
+from models.teacher import Teacher
 
 teachers_blueprint = Blueprint('teachers', __name__)
 
+# Exemplo de como poderia ficar o cadastro após adicionar os models
 #Cadastrando um professor
 @teachers_blueprint.route('/teachers', methods=['POST'])
 def create_teacher():
     data = request.json
-    teacher = {"id": len(teachers) + 1,
-               "nome":data["nome"], 
-               "idade":data["idade"],
-               "materia":data["materia"], 
-               "observacoes":data["observacoes"]
-               }
-    teachers.append(teacher)
-    return jsonify(teacher), 201
+    new_teacher = Teacher.add_teacher(data)
+    return jsonify(new_teacher.to_dict()), 201
+
 
 #Resgatando professores cadastrados
 @teachers_blueprint.route('/teachers', methods=['GET'])
