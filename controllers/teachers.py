@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models.teacher import Teacher
+from dal.db import teachers
 
 teachers_blueprint = Blueprint('teachers', __name__)
 
@@ -29,7 +30,7 @@ def update_teacher(teacher_id):
             teacher["observacoes"] = data.get('observacoes', teacher['observacoes'])
             return jsonify(teacher), 201
               
-        return jsonify({"ERRO":"Professor não encontrado!"}), 404
+    return jsonify({"ERRO":"Professor não encontrado!"}), 404
 
 #Deletando um professor
 @teachers_blueprint.route('/teachers/<int:teacher_id>', methods=['DELETE'])
