@@ -2,6 +2,8 @@ from dal.db import classes
 from dal.db import alunos   
 
 class Aluno:
+    
+
     def __init__(self, id, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre):
         # Inicializa um objeto da classe Aluno
         self.id = id
@@ -45,15 +47,12 @@ class Aluno:
     @staticmethod
     def add_aluno(aluno_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        new_aluno = {
-            "id": len(alunos) + 1,
-            "nome": aluno_data['nome'],
-            "idade": aluno_data['idade'],
-            "turma_id": aluno_data['turma_id'],  # Associa o aluno a uma turma
-            "data_nascimento": aluno_data['data_nascimento'],
-            "nota_primeiro_semestre": aluno_data['nota_primeiro_semestre'],
-            "nota_segundo_semestre": aluno_data['nota_segundo_semestre']
-        }
+        new_aluno = Aluno(aluno_data['nome'], 
+                          aluno_data['idade'], 
+                          aluno_data['turma_id'], 
+                          aluno_data['data_nascimento'], 
+                          aluno_data['nota_primeiro_semestre'], 
+                          aluno_data['nota_segundo_semestre'])
         alunos.append(new_aluno)
         return Aluno(**new_aluno)
 
