@@ -1,12 +1,19 @@
-from dal.db import classes
-from dal.db import alunos   
+from sqlalchemy import ForeignKey, Column, Integer, String, DateTime, Float
+from config import db
 
-class Aluno:
+class Student(db.Model):
+    __tablename__ = 'students'
     
+    id = db.Column(Integer, primary_key = True)
+    nome = db.Column(String(120))
+    idade = db.Column(Integer)
+    turma_id = db.Column(Integer, ForeignKey(classroom.id))
+    data_nascimento = db.Column(DateTime, timezone = True)
+    nota_primeiro_semestre = db.Column(Float)
+    nota_segundo_semestre = db.Column(Float)
 
-    def __init__(self, id, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre):
+    def __init__(self, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre):
         # Inicializa um objeto da classe Aluno
-        self.id = id
         self.nome = nome
         self.idade = idade
         self.turma_id = turma_id  # Relaciona Aluno a uma turma
@@ -33,45 +40,46 @@ class Aluno:
 
     @staticmethod
     def get_all():
-        # Retorna todos os alunos na lista 'alunos', criando instâncias de Aluno
-        return [Aluno(**aluno) for aluno in alunos]
+        students = Student.query.all()
+        return [student.to_dict() for student in students]
 
     @staticmethod
-    def get_by_id(aluno_id):
-        # Busca um aluno pelo ID na lista 'alunos'
-        for aluno in alunos:
-            if aluno["id"] == aluno_id:
-                return Aluno(**aluno)
-        return None  # Retorna None se o aluno não for encontrado
+    def get_by_id(student_id):
+        student = Student.query.get(student_id)
+        if not student:
+            raise StudentNotFound
+        return student.to_dict()
+
+
 
     @staticmethod
     def add_aluno(aluno_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        new_aluno = Aluno(aluno_data['nome'], 
+        student = Student(aluno_data['nome'], 
                           aluno_data['idade'], 
                           aluno_data['turma_id'], 
                           aluno_data['data_nascimento'], 
                           aluno_data['nota_primeiro_semestre'], 
                           aluno_data['nota_segundo_semestre'])
-        alunos.append(new_aluno)
-        return Aluno(**new_aluno)
+        db.session.add(student)
+        db.session.commit()
 
     @staticmethod
-    def update_aluno(aluno_id, data):
-        # Atualiza os dados de um aluno existente pelo ID
-        for aluno in alunos:
-            if aluno['id'] == aluno_id:
-                aluno['nome'] = data.get('nome', aluno['nome'])
-                aluno['idade'] = data.get('idade', aluno['idade'])
-                aluno['turma_id'] = data.get('turma_id', aluno['turma_id'])
-                aluno['data_nascimento'] = data.get('data_nascimento', aluno['data_nascimento'])
-                aluno['nota_primeiro_semestre'] = data.get('nota_primeiro_semestre', aluno['nota_primeiro_semestre'])
-                aluno['nota_segundo_semestre'] = data.get('nota_segundo_semestre', aluno['nota_segundo_semestre'])
-                return Aluno(**aluno)
-        return None
+    def update_aluno(student_id, new_data):
+        student = Student.query.get(student_id)
+        if not student:
+            raise StudentNotFound
+        student.name = new_data['name']
+        db.session.commit()
 
     @staticmethod
-    def delete_aluno(aluno_id):
-        # Remove um aluno da lista 'alunos' pelo ID
-        global alunos  # Acessa a lista global 'alunos'
-        alunos = [aluno for aluno in alunos if aluno["id"] != aluno_id]
+    def delete_student(student_id):
+        student = Student.query.get(student.id)
+        if not student:
+            raise StudentNotFound
+        db.session.delete(student)
+        db.session.commit()
+       
+       
+class StudentNotFound(Exception):
+        pass

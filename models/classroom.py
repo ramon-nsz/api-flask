@@ -1,9 +1,15 @@
-from dal.db import classes 
+from config import db 
 
-class Classroom:
-    def __init__(self, id, descricao, professor, ativo):
+class Classroom(db.Model):
+    __tablename__ = 'classroom'
+
+    id = db.Column(db.Integer, primary_key = True)
+    descricao = db.Column(db.String(120))
+    professor = db.Column(db.String(120))
+    ativo = db.Column(db.Boolean, default = True)
+
+    def __init__(self, descricao, professor, ativo):
         # Inicializa um objeto da classe Classroom com os atributos id, descricao, professor e ativo
-        self.id = id
         self.descricao = descricao
         self.professor = professor
         self.ativo = ativo
@@ -19,49 +25,42 @@ class Classroom:
 
     @staticmethod
     def get_all():
-        # Retorna todas as turmas (classrooms) na lista 'classes', criando instâncias de Classroom
-        return [Classroom(**classroom) for classroom in classes]
+        classes = Classroom.query.all()
+        return [classroom.to_dict() for classroom in classes]
+
 
     @staticmethod
     def get_by_id(classroom_id):
-        # Busca uma turma pelo ID na lista 'classes'
-        for classroom in classes:
-            if classroom["id"] == classroom_id:
-                # Retorna uma instância de Classroom se o ID for encontrado
-                return Classroom(**classroom)
-        # Retorna None se a turma não for encontrada
-        return None
+       classroom = Classroom.query.get(classroom_id)
+       if not classroom:
+           raise ClassroomNotFound
+       return classroom.to.dict()
+           
 
     @staticmethod
     def add_classroom(classroom_data):
         # Cria uma nova turma com os dados fornecidos, atribuindo um novo ID
-        new_classroom = {
-            "id": len(classes) + 1,  # Define o ID como o próximo número disponível
-            "descricao": classroom_data['descricao'],
-            "professor": classroom_data['professor'],
-            "ativo": classroom_data['ativo']
-        }
-        # Adiciona a nova turma à lista 'classes'
-        classes.append(new_classroom)
-        # Retorna uma instância de Classroom com os dados da nova turma
-        return Classroom(**new_classroom)
+        classroom = Classroom(classroom_data['descricao'],
+                              classroom_data['professor'],
+                              classroom_data['ativo'])
+        db.session.add(classroom)
+        db.session.commit()
 
     @staticmethod
-    def update_classroom(classroom_id, data):
-        # Atualiza os dados de uma turma existente pelo ID
-        for classroom in classes:
-            if classroom['id'] == classroom_id:
-                # Atualiza os campos fornecidos (se houver) nos dados recebidos
-                classroom['descricao'] = data.get('descricao', classroom['descricao'])
-                classroom['professor'] = data.get('professor', classroom['professor'])
-                classroom['ativo'] = data.get('ativo', classroom['ativo'])
-                # Retorna a instância de Classroom atualizada
-                return Classroom(**classroom)
-        # Retorna None se a turma com o ID fornecido não for encontrada
-        return None
+    def update_classroom(classroom_id, new_data):
+        classroom = Classroom.query.get(classroom_id)
+        if not classroom:
+            raise ClassroomNotFound
+        classroom.name = new_data['name']
+        db.session.commit()
 
     @staticmethod
     def delete_classroom(classroom_id):
-        # Remove uma turma da lista 'classes' pelo ID
-        global classes  # Acessa a lista global 'classes'
-        classes = [classroom for classroom in classes if classroom["id"] != classroom_id]
+        classroom = Classroom.query.get(classroom_id)
+        if not classroom:
+            raise ClassroomNotFound
+        db.session.delete(classroom)
+        db.session.commit()
+
+class ClassroomNotFound(Exception):
+        pass
