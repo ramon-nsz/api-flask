@@ -9,11 +9,11 @@ def getIndex():
 
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UM NOVO ALUNO
 @students_blueprint.route('/students/add', methods=['GET'])
-def create_student():
-    return render_template(createStudent.html)
+def create_student_page():
+    return render_template('createStudent.html')
 
 #ROTA QUE CRIA UM NOVO ALUNO
-@students_blueprint.route('/students', method=['POST'])
+@students_blueprint.route('/students', methods=['POST'])
 def create_student():
     new_student = Student(request.form['nome'],
                           request.form['idade'],
@@ -41,7 +41,7 @@ def get_students():
 
 #ROTA PARA ACESSAR O FORMULÁRIO DE EDIÇÃO DE UM ALUNO
 @students_blueprint.route('/students/<int:student_id>/edit', methods=['GET'])
-def update_student(student_id):
+def update_student_page(student_id):
     student = Student.get_by_id(student_id)
     return render_template('student_update.html', student=student)
 

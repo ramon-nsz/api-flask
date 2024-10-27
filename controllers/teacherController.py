@@ -9,11 +9,11 @@ def getIndex():
 
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UM NOVO PROFESSOR
 @teachers_blueprint.route('/teachers/add', methods=['GET'])
-def create_teacher():
-    return render_template(createTeacher.html)
+def create_teacher_page():
+    return render_template('createTeacher.html')
 
 #ROTA QUE CRIA UM NOVO PROFESSOR
-@teachers_blueprint.route('/teachers', method=['POST'])
+@teachers_blueprint.route('/teachers', methods=['POST'])
 def create_teacher():
     new_teacher = Teacher(request.form['nome'],
                           request.form['idade'],
@@ -39,7 +39,7 @@ def get_teachers():
 
 #ROTA PARA ACESSAR O FORMULÁRIO DE EDIÇÃO DE UM PROFESSOR
 @teachers_blueprint.route('/teachers/<int:teacher_id>/edit', methods=['GET'])
-def update_teacher(teacher_id):
+def update_teacher_page(teacher_id):
     teacher = Teacher.get_by_id(teacher_id)
     return render_template('teacher_update.html', teacher=teacher)
 
