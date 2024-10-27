@@ -1,7 +1,7 @@
 from config import db 
 
 class Classroom(db.Model):
-    __tablename__ = 'classroom'
+    __tablename__ = 'classes'
 
     id = db.Column(db.Integer, primary_key = True)
     descricao = db.Column(db.String(120))

@@ -1,16 +1,16 @@
-from sqlalchemy import ForeignKey, Column, Integer, String, DateTime, Float
 from config import db
+from models.classroomModel import Classroom
 
 class Student(db.Model):
     __tablename__ = 'students'
     
-    id = db.Column(Integer, primary_key = True)
-    nome = db.Column(String(120))
-    idade = db.Column(Integer)
-    turma_id = db.Column(Integer, ForeignKey(classroom.id))
-    data_nascimento = db.Column(DateTime, timezone = True)
-    nota_primeiro_semestre = db.Column(Float)
-    nota_segundo_semestre = db.Column(Float)
+    id = db.Column(db.Integer, primary_key = True)
+    nome = db.Column(db.String(120))
+    idade = db.Column(db.Integer)
+    turma_id = db.Column(db.Integer, db.ForeignKey(Classroom.id))
+    data_nascimento = db.Column(db.DateTime)
+    nota_primeiro_semestre = db.Column(db.Float)
+    nota_segundo_semestre = db.Column(db.Float)
 
     def __init__(self, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre):
         # Inicializa um objeto da classe Aluno
@@ -51,21 +51,20 @@ class Student(db.Model):
         return student.to_dict()
 
 
-
     @staticmethod
-    def add_aluno(aluno_data):
+    def add_student(student_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        student = Student(aluno_data['nome'], 
-                          aluno_data['idade'], 
-                          aluno_data['turma_id'], 
-                          aluno_data['data_nascimento'], 
-                          aluno_data['nota_primeiro_semestre'], 
-                          aluno_data['nota_segundo_semestre'])
+        student = Student(student_data['nome'], 
+                          student_data['idade'], 
+                          student_data['turma_id'], 
+                          student_data['data_nascimento'], 
+                          student_data['nota_primeiro_semestre'], 
+                          student_data['nota_segundo_semestre'])
         db.session.add(student)
         db.session.commit()
 
     @staticmethod
-    def update_aluno(student_id, new_data):
+    def update_student(student_id, new_data):
         student = Student.query.get(student_id)
         if not student:
             raise StudentNotFound

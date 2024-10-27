@@ -1,3 +1,4 @@
+from flask import jsonify
 from config import db
 
 class Teacher(db.Model):
@@ -52,17 +53,22 @@ class Teacher(db.Model):
     def update_teacher(teacher_id, new_data):
         teacher = Teacher.query.get(teacher_id)
         if not teacher:
-            raise TeacherNotFound
-        teacher.name = new_data['name']
+            return TeacherNotFound
+        teacher.nome = new_data['nome']
+        teacher.idade = new_data['idade']
+        teacher.materia = new_data['materia']
+        teacher.observacoes = new_data['observacoes']
         db.session.commit()
+        return jsonify({"SUCESSO":"PROFESSOR ATUALIZADO COM SUCESSO"}), 200
 
     @staticmethod
     def delete_teacher(teacher_id):
         teacher = Teacher.query.get(teacher_id)
         if not teacher:
-            raise TeacherNotFound
+            return TeacherNotFound
         db.session.delete(teacher)
         db.session.commit()
+        return jsonify({"SUCESSO":"PROFESSOR DELETADO COM SUCESSO"}), 200
 
 class TeacherNotFound(Exception):
         pass
