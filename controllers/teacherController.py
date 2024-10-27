@@ -3,6 +3,10 @@ from models.teacherModel import Teacher
 
 teachers_blueprint = Blueprint('teachers', __name__)
 
+@teachers_blueprint.route('/', methods=['GET'])
+def getIndex():
+    return "My index"
+
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UM NOVO PROFESSOR
 @teachers_blueprint.route('/teachers/add', methods=['GET'])
 def create_teacher():
@@ -25,7 +29,7 @@ def get_teacher(teacher_id):
         teacher = Teacher.get_by_id(teacher_id)
         return render_template('teacher_id.html', teacher=teacher)
     except Teacher.TeacherNotFound:
-        return jsonify({'message': 'Aluno não encontrado'}), 404
+        return jsonify({'message': 'Professor não encontrado'}), 404
 
 #ROTA PARA PUXAR PROFESSORES CADASTRADOS
 @teachers_blueprint.route('/teachers', methods=['GET'])
@@ -50,7 +54,7 @@ def update_teacher(teacher_id):
         Teacher.update_teacher(teacher_id, new_data)
         return redirect(url_for('teachers.get_teacher', teacher_id=teacher_id))
     except Teacher.TeacherNotFound:
-        return jsonify({'message': 'Teacher not found'}), 404
+        return jsonify({'message': 'Professor não encontrado'}), 404
 
 #ROTA PARA DELETAR UM PROFESSOR
 @teachers_blueprint.route('/teachers/<int:teacher_id>/delete', methods=['DELETE', 'POST'])
@@ -59,4 +63,4 @@ def delete_teacher(teacher_id):
         Teacher.delete_teacher(teacher_id)
         return redirect(url_for('teachers.get_teachers'))
     except Teacher.TeacherNotFound:
-        return jsonify({'message': 'Teacher not found'}), 404
+        return jsonify({'message': 'Professor não encontrado'}), 404
