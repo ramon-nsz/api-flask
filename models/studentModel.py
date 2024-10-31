@@ -1,5 +1,5 @@
 from config import db
-from models.classroomModel import Classroom
+from models.classroomModel import Classroom, ClassroomNotFound
 
 class Student(db.Model):
     __tablename__ = 'students'
@@ -8,7 +8,7 @@ class Student(db.Model):
     nome = db.Column(db.String(120))
     idade = db.Column(db.Integer)
     turma_id = db.Column(db.Integer, db.ForeignKey(Classroom.id))
-    data_nascimento = db.Column(db.DateTime)
+    data_nascimento = db.Column(db.String)
     nota_primeiro_semestre = db.Column(db.Float)
     nota_segundo_semestre = db.Column(db.Float)
 
@@ -54,26 +54,35 @@ class Student(db.Model):
     @staticmethod
     def add_student(student_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        student = Student(student_data['nome'], 
-                          student_data['idade'], 
-                          student_data['turma_id'], 
-                          student_data['data_nascimento'], 
-                          student_data['nota_primeiro_semestre'], 
-                          student_data['nota_segundo_semestre'])
-        db.session.add(student)
-        db.session.commit()
+        classroom = Classroom.get_by_id(student_data['turma_id'])
+        if not classroom:
+            raise ClassroomNotFound
+        else:
+            student = Student(student_data['nome'], 
+                            student_data['idade'], 
+                            student_data['turma_id'], 
+                            student_data['data_nascimento'], 
+                            student_data['nota_primeiro_semestre'], 
+                            student_data['nota_segundo_semestre'])
+            db.session.add(student)
+            db.session.commit()
 
     @staticmethod
     def update_student(student_id, new_data):
         student = Student.query.get(student_id)
         if not student:
             raise StudentNotFound
-        student.name = new_data['name']
+        student.nome = new_data['nome']
+        student.idade = new_data['idade']
+        student.turma_id = new_data['turma_id']
+        student.data_nascimento = new_data['data_nascimento']
+        student.nota_primeiro_semestre = new_data['nota_primeiro_semestre']
+        student.nota_segundo_semestre = new_data['nota_segundo_semestre']
         db.session.commit()
 
     @staticmethod
     def delete_student(student_id):
-        student = Student.query.get(student.id)
+        student = Student.query.get(student_id)
         if not student:
             raise StudentNotFound
         db.session.delete(student)

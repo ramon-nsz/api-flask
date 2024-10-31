@@ -6,7 +6,7 @@ class Classroom(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     descricao = db.Column(db.String(120))
     professor = db.Column(db.String(120))
-    ativo = db.Column(db.Boolean, default = True)
+    ativo = db.Column(db.String, default = True)
 
     def __init__(self, descricao, professor, ativo):
         # Inicializa um objeto da classe Classroom com os atributos id, descricao, professor e ativo
@@ -34,7 +34,7 @@ class Classroom(db.Model):
        classroom = Classroom.query.get(classroom_id)
        if not classroom:
            raise ClassroomNotFound
-       return classroom.to.dict()
+       return classroom.to_dict()
            
 
     @staticmethod

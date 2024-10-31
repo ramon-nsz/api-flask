@@ -1,5 +1,6 @@
 from flask import jsonify
 from config import db
+from models.classroomModel import Classroom, ClassroomNotFound
 
 class Teacher(db.Model):
     __tablename__ = 'teachers'
@@ -41,12 +42,12 @@ class Teacher(db.Model):
 
     @staticmethod
     def add_teacher(teacher_data):
-        # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        new_teacher = Teacher(teacher_data['nome'], 
-                          teacher_data['idade'], 
-                          teacher_data['materia'], 
-                          teacher_data['observacoes'])
-        db.session.add(new_teacher)
+        # Cria um novo professor com os dados fornecidos, atribuindo um novo ID
+        teacher = Teacher(teacher_data['nome'], 
+                        teacher_data['idade'], 
+                        teacher_data['ativo'], 
+                        teacher_data['observacoes'])
+        db.session.add(teacher)
         db.session.commit()
 
     @staticmethod
