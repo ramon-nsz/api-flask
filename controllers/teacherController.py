@@ -3,10 +3,6 @@ from models.teacherModel import Teacher
 
 teachers_blueprint = Blueprint('teachers', __name__)
 
-@teachers_blueprint.route('/', methods=['GET'])
-def getIndex():
-    return "My index"
-
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UM NOVO PROFESSOR
 @teachers_blueprint.route('/teachers/add', methods=['GET'])
 def create_teacher_page():
@@ -15,12 +11,12 @@ def create_teacher_page():
 #ROTA QUE CRIA UM NOVO PROFESSOR
 @teachers_blueprint.route('/teachers', methods=['POST'])
 def create_teacher():
-    new_teacher = Teacher(request.form['nome'],
-                          request.form['idade'],
-                          request.form['materia'],
-                          request.form['observacoes'])
+    new_teacher = {'nome': request.form['nome'],
+                          'idade': request.form['idade'],
+                          'ativo': request.form['ativo'],
+                          'observacoes': request.form['observacoes']}
     Teacher.add_teacher(new_teacher)
-    return redirect(url_for('teacher.get_teachers'))
+    return redirect(url_for('teachers.get_teachers'))
 
 #ROTA PARA PUXAR UM PROFESSOR
 @teachers_blueprint.route('/teachers/<int:teacher_id>', methods=['GET'])

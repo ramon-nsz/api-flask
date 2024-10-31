@@ -2,11 +2,6 @@ from flask import Blueprint, request, jsonify,render_template,redirect, url_for
 from models.classroomModel import Classroom
 classes_blueprint = Blueprint('classes', __name__)
 
-@classes_blueprint.route('/', methods=['GET'])
-def getIndex():
-    return "My index"
-
-
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UMA NOVA TURMA
 @classes_blueprint.route('/classes/add', methods=['GET'])
 def create_classroom_page():
@@ -15,20 +10,17 @@ def create_classroom_page():
 #ROTA QUE CRIA UMA NOVA TURMA
 @classes_blueprint.route('/classes', methods=['POST'])
 def create_classroom():
-    new_classroom = Classroom(request.form['descricao'],
-                          request.form['professor'],
-                          request.form['ativo'])
+    new_classroom = {'descricao': request.form['descricao'],
+                          'professor': request.form['professor'],
+                          'ativo': request.form['ativo']}
     Classroom.add_classroom(new_classroom)
-    return redirect(url_for('classroom.get_classes'))
+    return redirect(url_for('classes.get_classes'))
 
 #ROTA PARA PUXAR UMA TURMA
 @classes_blueprint.route('/classes/<int:classroom_id>', methods=['GET'])
 def get_classroom(classroom_id):
-    try:
         classroom = Classroom.get_by_id(classroom_id)
         return render_template('classroom_id.html', classroom=classroom)
-    except Classroom.ClassroomNotFound:
-        return jsonify({'message': 'Turma não encontrada'}), 404
 
 #ROTA PARA PUXAR TURMAS CADASTRADAS
 @classes_blueprint.route('/classes', methods=['GET'])
