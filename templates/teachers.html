@@ -1,0 +1,22 @@
+<!-- teachers.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Professores</title>
+</head>
+
+<body>
+  <h1>Lista de Professores</h1>
+  <ul>
+    {% for teacher in teachers %}
+    <li><a href="{{ url_for('teachers.get_teacher', teacher_id=teacher.id) }}">{{ teacher.nome }} (ID: {{ teacher.id }})</a></li>
+    {% endfor %}
+  </ul>
+
+
+</body>
+
+</html>

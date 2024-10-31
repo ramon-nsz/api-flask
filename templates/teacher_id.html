@@ -1,0 +1,32 @@
+<!-- teacher_id.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Professor</title>
+</head>
+
+<body>
+  <h1>Detalhes do Professor</h1>
+  <p><strong>ID:</strong> {{ teacher.id }}</p>
+  <p><strong>Nome:</strong> {{ teacher.nome }}</p>
+  <p><strong>Idade:</strong> {{ teacher.idade }}</p>
+  <p><strong>Matéria:</strong> {{ teacher.materia }}</p>
+  <p><strong>Observações:</strong> {{ teacher.observacoes }}</p>
+
+  <form id="delete-form" action="{{ url_for('teachers.delete_teacher', teacher_id=teacher.id) }}" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Excluir Professor</button>
+  </form>
+  <form id="update-form" action="{{ url_for('teachers.update_teacher_page', teacher_id=teacher.id) }}" method="GET">
+    <input type="hidden" name="_method" value="UPDATE">
+    <button type="submit">Atualizar Professor</button>
+  </form>
+  <a href="{{ url_for('teachers.get_teachers') }}">Voltar para a lista de professores</a>
+
+
+</body>
+
+</html>

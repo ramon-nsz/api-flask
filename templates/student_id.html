@@ -1,0 +1,35 @@
+<!-- student_id.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Aluno</title>
+</head>
+
+<body>
+  <h1>Detalhes do Aluno</h1>
+  <p><strong>ID:</strong> {{ student.id }}</p>
+  <p><strong>Nome:</strong> {{ student.nome }}</p>
+  <p><strong>Idade:</strong> {{ student.idade }}</p>
+  <p><strong>Turma ID:</strong> {{ student.turma_id }}</p>
+  <p><strong>Data de nascimento:</strong> {{ student.data_nascimento }}</p>
+  <p><strong>Nota do primeiro semestre:</strong> {{ student.nota_primeiro_semestre }}</p>
+  <p><strong>Nota do segundo semestre:</strong> {{ student.nota_segundo_semestre }}</p>
+  <p><strong>Media Final:</strong> {{ student.media_final }}</p>
+
+  <form id="delete-form" action="{{ url_for('students.delete_student', student_id=student.id) }}" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Excluir Aluno</button>
+  </form>
+  <form id="update-form" action="{{ url_for('students.update_student_page', student_id=student.id) }}" method="GET">
+    <input type="hidden" name="_method" value="UPDATE">
+    <button type="submit">Atualizar Aluno</button>
+  </form>
+  <a href="{{ url_for('students.get_students') }}">Voltar para a lista de alunos</a>
+
+
+</body>
+
+</html>

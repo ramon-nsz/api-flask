@@ -1,0 +1,33 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SchoolAPI</title>
+</head>
+
+<body>
+  <h1>Bem vindo a SchoolAPI</h1>
+  <form action="{{ url_for('teachers.get_teachers') }}" method="GET">
+    <button type="submit">Listar professores cadastrados</button>
+  </form>
+  <form action="{{ url_for('students.get_students') }}" method="GET">
+    <button type="submit">Listar alunos cadastrados</button>
+  </form>
+  <form action="{{ url_for('classes.get_classes') }}" method="GET">
+    <button type="submit">Listar turmas cadastradas</button>
+  </form>
+  <form action="{{ url_for('teachers.create_teacher_page') }}" method="GET">
+    <button type="submit">Cadastrar Professor</button>
+  </form>
+  <form action="{{ url_for('students.create_student_page') }}" method="GET">
+    <button type="submit">Cadastrar Aluno</button>
+  </form>
+  <form action="{{ url_for('classes.create_classroom_page') }}" method="GET">
+    <button type="submit">Cadastrar Turma</button>
+  </form>
+</body>
+
+</html>

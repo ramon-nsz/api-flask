@@ -1,0 +1,27 @@
+<!-- createClassroom.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Aluno</title>
+</head>
+
+<body>
+  <h1>Adicionar Sala de aula</h1>
+  <form action="{{ url_for('classes.create_classroom') }}" method="post">
+    <label for="nome">Descrição:</label><br>
+    <input type="text" id="descricao" name="descricao"><br>
+    <label for="nome">Professor:</label><br>
+    <input type="number" id="professor" name="professor"><br>
+    <label for="ativo">Status:</label>
+      <select id="ativo" name="ativo">
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
+      </select>
+    <input type="submit" value="Adicionar Sala de aula">
+  </form>
+</body>
+
+</html>
