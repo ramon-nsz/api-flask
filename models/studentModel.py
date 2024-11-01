@@ -12,6 +12,7 @@ class Student(db.Model):
     data_nascimento = db.Column(db.String)
     nota_primeiro_semestre = db.Column(db.Float)
     nota_segundo_semestre = db.Column(db.Float)
+    media_final = db.Column(db.Float)
 
     def __init__(self, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre):
         # Inicializa um objeto da classe Aluno
@@ -21,6 +22,7 @@ class Student(db.Model):
         self.data_nascimento = data_nascimento
         self.nota_primeiro_semestre = nota_primeiro_semestre
         self.nota_segundo_semestre = nota_segundo_semestre
+        self.media_final = self.calcular_media()
 
     def to_dict(self):
         # Converte o objeto Aluno para um dicionário para facilitar a serialização
@@ -37,7 +39,7 @@ class Student(db.Model):
 
     def calcular_media(self):
         # Calcula a média final do aluno com base nas notas dos dois semestres
-        return (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
+        return (float(self.nota_primeiro_semestre) + float(self.nota_segundo_semestre)) / 2
 
     @staticmethod
     def get_all():

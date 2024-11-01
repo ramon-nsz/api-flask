@@ -1,16 +1,24 @@
 from flask import Flask
-from config import myApp,db
+from config import myApp, db
 from controllers.teacherController import teachers_blueprint
 from controllers.classroomController import classes_blueprint
 from controllers.studentController import students_blueprint
 
-myApp.register_blueprint(teachers_blueprint)
-myApp.register_blueprint(classes_blueprint)
-myApp.register_blueprint(students_blueprint)
+def create_app():
+    # Inicializa a aplicação Flask
+    app = myApp
 
+    # Registra os blueprints
+    app.register_blueprint(teachers_blueprint)
+    app.register_blueprint(classes_blueprint)
+    app.register_blueprint(students_blueprint)
 
-with myApp.app_context():
-    db.create_all()
+    # Cria o banco de dados apenas no contexto da aplicação
+    with app.app_context():
+        db.create_all()
+
+    return app
 
 if __name__ == '__main__':
-    myApp.run(host=myApp.config["HOST"], port = myApp.config['PORT'],debug=myApp.config['DEBUG'] )
+    app = create_app()
+    app.run(host=app.config["HOST"], port=app.config['PORT'], debug=app.config['DEBUG'])
