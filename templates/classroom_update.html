@@ -1,0 +1,31 @@
+<!-- classroom_update.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atualizar Sala de Aula</title>
+</head>
+
+<body>
+  <h1>Atualizar Sala de Aula</h1>
+  <form id="update-form" action="{{ url_for('classes.update_classroom', classroom_id=classroom.id) }}" method="POST">
+    <input type="hidden" name="_method" value="POST">
+    
+    <label for="classroom">Descrição:</label>
+    <input type="text" id="classroom" name="descricao" value="{{ classroom.descricao }}">
+    
+    <label for="professor_id">ID do Professor:</label>
+    <input type="text" id="professor_id" name="professor_id" value="{{ classroom.professor }}">
+    
+    <label for="ativo">Ativo:</label>
+    <input type="text" id="ativo" name="ativo" value="{{ classroom.ativo }}">
+    
+    <button type="submit">Atualizar Sala de Aula</button>
+  </form>
+  
+  <a href="{{ url_for('classes.get_classes') }}">Voltar para a lista de turmas</a>
+</body>
+
+</html>

@@ -13,7 +13,7 @@ def create_teacher_page():
 def create_teacher():
     new_teacher = {'nome': request.form['nome'],
                           'idade': request.form['idade'],
-                          'ativo': request.form['ativo'],
+                          'materia': request.form['materia'],
                           'observacoes': request.form['observacoes']}
     Teacher.add_teacher(new_teacher)
     return redirect(url_for('teachers.get_teachers'))

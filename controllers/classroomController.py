@@ -11,7 +11,7 @@ def create_classroom_page():
 @classes_blueprint.route('/classes', methods=['POST'])
 def create_classroom():
     new_classroom = {'descricao': request.form['descricao'],
-                          'professor': request.form['professor'],
+                          'professor_id': request.form['professor_id'],
                           'ativo': request.form['ativo']}
     Classroom.add_classroom(new_classroom)
     return redirect(url_for('classes.get_classes'))
@@ -39,7 +39,7 @@ def update_classroom_page(classroom_id):
 def update_classroom(classroom_id):
     try:
         new_data = {'descricao': request.form['descricao'], 
-                           'professor':request.form['professor'],
+                           'professor_id':request.form['professor_id'],
                            'ativo':request.form['ativo']}
         Classroom.update_classroom(classroom_id, new_data)
         return redirect(url_for('classes.get_classroom', classroom_id=classroom_id))

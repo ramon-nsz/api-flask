@@ -1,4 +1,5 @@
 from config import db 
+from models.teacherModel import Teacher, TeacherNotFound
 
 class Classroom(db.Model):
     __tablename__ = 'classes'
@@ -39,12 +40,16 @@ class Classroom(db.Model):
 
     @staticmethod
     def add_classroom(classroom_data):
-        # Cria uma nova turma com os dados fornecidos, atribuindo um novo ID
-        classroom = Classroom(classroom_data['descricao'],
-                              classroom_data['professor'],
-                              classroom_data['ativo'])
-        db.session.add(classroom)
-        db.session.commit()
+        # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
+        teacher = Teacher.get_by_id(classroom_data['professor_id'])
+        if not teacher:
+            raise TeacherNotFound
+        else:
+            classroom = Classroom(classroom_data['descricao'], 
+                            classroom_data['id'], 
+                            classroom_data['ativo'])
+            db.session.add(classroom)
+            db.session.commit()
 
     @staticmethod
     def update_classroom(classroom_id, new_data):

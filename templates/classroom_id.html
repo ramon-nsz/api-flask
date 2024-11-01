@@ -1,0 +1,31 @@
+<!-- classroom_id.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Turma</title>
+</head>
+
+<body>
+  <h1>Detalhes da Turma</h1>
+  <p><strong>ID:</strong> {{ classroom.id }}</p>
+  <p><strong>Descrição:</strong> {{ classroom.descricao }}</p>
+  <p><strong>Professor:</strong> {{ classroom.professor }}</p>
+  <p><strong>Ativo:</strong> {{ classroom.ativo }}</p>
+
+  <form id="delete-form" action="{{ url_for('classes.delete_classroom', classroom_id=classroom.id) }}" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Excluir Turma</button>
+  </form>
+  <form id="update-form" action="{{ url_for('classes.update_classroom_page', classroom_id=classroom.id) }}" method="GET">
+    <input type="hidden" name="_method" value="UPDATE">
+    <button type="submit">Atualizar Turma</button>
+  </form>
+  <a href="{{ url_for('classes.get_classes') }}">Voltar para a lista de turmas</a>
+
+
+</body>
+
+</html>
