@@ -20,10 +20,10 @@
     <input type="number" id="idade" name="idade" value="{{ student.idade }}">
     
     <label for="turma_id">Turma ID:</label>
-    <input type="text" id="turma_id" name="turma_id" value="{{ student.turma_id }}">
+    <input type="number" id="turma_id" name="turma_id" value="{{ student.turma.id }}">
     
     <label for="data_nascimento">Data de nascimento:</label>
-    <input type="text" id="data_nascimento" name="data_nascimento" value="{{ student.data_nascimento }}">
+    <input type="date" step="any" id="data_nascimento" name="data_nascimento" value="{{ student.data_nascimento }}">
     
     <label for="nota_primeiro_semestre">Nota do primeiro semestre:</label>
     <input type="number" id="nota_primeiro_semestre" name="nota_primeiro_semestre" value="{{ student.nota_primeiro_semestre }}">

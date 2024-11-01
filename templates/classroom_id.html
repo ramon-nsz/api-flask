@@ -12,7 +12,7 @@
   <h1>Detalhes da Turma</h1>
   <p><strong>ID:</strong> {{ classroom.id }}</p>
   <p><strong>Descrição:</strong> {{ classroom.descricao }}</p>
-  <p><strong>Professor:</strong> {{ classroom.professor }}</p>
+  <p><strong>Professor:</strong> {{ classroom.professor.nome }}</p>
   <p><strong>Ativo:</strong> {{ classroom.ativo }}</p>
 
   <form id="delete-form" action="{{ url_for('classes.delete_classroom', classroom_id=classroom.id) }}" method="POST">

@@ -6,13 +6,14 @@ class Classroom(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     descricao = db.Column(db.String(120))
-    professor = db.Column(db.String(120))
-    ativo = db.Column(db.String, default = True)
+    professor_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))  # chave estrangeira
+    professor = db.relationship('Teacher', backref='classes')  # relação com a classe Teacher
+    ativo = db.Column(db.String(15))
 
-    def __init__(self, descricao, professor, ativo):
+    def __init__(self, descricao, professor_id, ativo):
         # Inicializa um objeto da classe Classroom com os atributos id, descricao, professor e ativo
         self.descricao = descricao
-        self.professor = professor
+        self.professor_id = professor_id
         self.ativo = ativo
 
     def to_dict(self):
@@ -41,12 +42,12 @@ class Classroom(db.Model):
     @staticmethod
     def add_classroom(classroom_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        teacher = Teacher.get_by_id(classroom_data['professor_id'])
+        teacher = Teacher.query.get(classroom_data['professor_id'])
         if not teacher:
             raise TeacherNotFound
         else:
             classroom = Classroom(classroom_data['descricao'], 
-                            classroom_data['id'], 
+                            teacher.id, 
                             classroom_data['ativo'])
             db.session.add(classroom)
             db.session.commit()
@@ -54,9 +55,14 @@ class Classroom(db.Model):
     @staticmethod
     def update_classroom(classroom_id, new_data):
         classroom = Classroom.query.get(classroom_id)
+        teacher = Teacher.query.get(new_data['professor_id'])
         if not classroom:
             raise ClassroomNotFound
-        classroom.name = new_data['name']
+        elif not teacher:
+            raise TeacherNotFound
+        classroom.descricao = new_data['descricao']
+        classroom.professor_id = new_data['professor_id']
+        classroom.ativo = new_data['ativo']
         db.session.commit()
 
     @staticmethod

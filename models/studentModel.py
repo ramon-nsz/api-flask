@@ -7,7 +7,8 @@ class Student(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(120))
     idade = db.Column(db.Integer)
-    turma_id = db.Column(db.Integer, db.ForeignKey(Classroom.id))
+    turma_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
+    turma = db.relationship('Classroom', backref='students') 
     data_nascimento = db.Column(db.String)
     nota_primeiro_semestre = db.Column(db.Float)
     nota_segundo_semestre = db.Column(db.Float)
@@ -27,7 +28,7 @@ class Student(db.Model):
             "id": self.id,
             "nome": self.nome,
             "idade": self.idade,
-            "turma_id": self.turma_id,  # ID da turma do aluno
+            "turma": self.turma,  # ID da turma do aluno
             "data_nascimento": self.data_nascimento,
             "nota_primeiro_semestre": self.nota_primeiro_semestre,
             "nota_segundo_semestre": self.nota_segundo_semestre,
@@ -54,13 +55,13 @@ class Student(db.Model):
     @staticmethod
     def add_student(student_data):
         # Cria um novo aluno com os dados fornecidos, atribuindo um novo ID
-        classroom = Classroom.get_by_id(student_data['turma_id'])
+        classroom = Classroom.query.get(student_data['turma_id'])
         if not classroom:
             raise ClassroomNotFound
         else:
             student = Student(student_data['nome'], 
                             student_data['idade'], 
-                            student_data['turma_id'], 
+                            classroom.id, 
                             student_data['data_nascimento'], 
                             student_data['nota_primeiro_semestre'], 
                             student_data['nota_segundo_semestre'])
@@ -70,8 +71,11 @@ class Student(db.Model):
     @staticmethod
     def update_student(student_id, new_data):
         student = Student.query.get(student_id)
+        classroom = Classroom.query.get(new_data['turma_id'])
         if not student:
             raise StudentNotFound
+        elif not classroom:
+            raise ClassroomNotFound
         student.nome = new_data['nome']
         student.idade = new_data['idade']
         student.turma_id = new_data['turma_id']

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify,render_template,redirect, url_for
-from models.classroomModel import Classroom
+from models.classroomModel import Classroom, ClassroomNotFound
 classes_blueprint = Blueprint('classes', __name__)
 
 #ROTA PARA ACESSAR O FORMULÁRIO DE CRIAÇÃO DE UMA NOVA TURMA
@@ -43,7 +43,7 @@ def update_classroom(classroom_id):
                            'ativo':request.form['ativo']}
         Classroom.update_classroom(classroom_id, new_data)
         return redirect(url_for('classes.get_classroom', classroom_id=classroom_id))
-    except Classroom.ClassroomNotFound:
+    except ClassroomNotFound:
         return jsonify({'message': 'Turma não encontrada'}), 404
 
 #ROTA PARA DELETAR UMA TURMA
@@ -52,5 +52,5 @@ def delete_classroom(classroom_id):
     try:
         Classroom.delete_classroom(classroom_id)
         return redirect(url_for('classes.get_classes'))
-    except Classroom.ClassroomNotFound:
+    except ClassroomNotFound:
         return jsonify({'message': 'Turma não encontrada'}), 404

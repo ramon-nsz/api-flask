@@ -17,10 +17,13 @@
     <input type="text" id="classroom" name="descricao" value="{{ classroom.descricao }}">
     
     <label for="professor_id">ID do Professor:</label>
-    <input type="text" id="professor_id" name="professor_id" value="{{ classroom.professor }}">
+    <input type="text" id="professor_id" name="professor_id" value="{{ classroom.professor.id }}">
     
     <label for="ativo">Ativo:</label>
-    <input type="text" id="ativo" name="ativo" value="{{ classroom.ativo }}">
+      <select id="ativo" name="ativo">
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
+      </select>
     
     <button type="submit">Atualizar Sala de Aula</button>
   </form>
