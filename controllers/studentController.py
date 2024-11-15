@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template,redirect, url_for
 from models.studentModel import Student
+from services.valid_date import valid_date
 
 students_blueprint = Blueprint('students', __name__)
 
@@ -27,14 +28,18 @@ def create_student():
 #ROTA QUE CRIA UM NOVO ALUNO (RETORNA JSON)
 @students_blueprint.route('/students/create', methods=['POST'])
 def create_student_json():
-    new_student = {'nome': request.json['nome'],
-                          'idade': request.json['idade'],
-                          'turma_id': request.json['turma_id'],
-                          'data_nascimento': request.json['data_nascimento'],
-                          'nota_primeiro_semestre': request.json['nota_primeiro_semestre'],
-                          'nota_segundo_semestre': request.json['nota_segundo_semestre']}
-    Student.add_student(new_student)
-    return jsonify(Student.get_all())
+    valid_birth_date = valid_date(request.json['data_nascimento'])
+    if not valid_birth_date:
+          return jsonify({"ERRO":"Data de nascimento inválida. Use o formato YYYY-MM-DD."})
+    else:
+        new_student = {'nome': request.json['nome'],
+                            'idade': request.json['idade'],
+                            'turma_id': request.json['turma_id'],
+                            'data_nascimento': request.json['data_nascimento'],
+                            'nota_primeiro_semestre': request.json['nota_primeiro_semestre'],
+                            'nota_segundo_semestre': request.json['nota_segundo_semestre']}
+        Student.add_student(new_student)
+        return jsonify(Student.get_all())
 
 #ROTA PARA PUXAR UM ALUNO
 @students_blueprint.route('/students/<int:student_id>', methods=['GET'])
