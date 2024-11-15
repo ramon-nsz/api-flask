@@ -21,7 +21,7 @@ class Classroom(db.Model):
         return {
             "id": self.id,
             "descricao": self.descricao,
-            "professor": self.professor,
+            "professor": self.professor.to_dict(),
             "ativo": self.ativo
         }
 

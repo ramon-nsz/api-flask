@@ -30,7 +30,7 @@ class Student(db.Model):
             "id": self.id,
             "nome": self.nome,
             "idade": self.idade,
-            "turma": self.turma,  # ID da turma do aluno
+            "turma": self.turma.to_dict(),  # ID da turma do aluno
             "data_nascimento": self.data_nascimento,
             "nota_primeiro_semestre": self.nota_primeiro_semestre,
             "nota_segundo_semestre": self.nota_segundo_semestre,
