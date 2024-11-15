@@ -49,3 +49,29 @@
 ```
 
 <p align=justify>Para o mapeamento das tabelas foi utilizado o ORM SQLAlchemy</p>
+
+<h2>Rotas</h2>
+<h3>Professores</h3>
+<ul>
+  <li><strong>Cadastrar professor</strong> - teachers/create (Método: POST)</li>
+  <li><strong>Puxar professor cadastrado</strong> - teacher/[id do professor] (Método: GET)</li>
+  <li><strong>Puxar todos os professores cadastrados</strong> - teachers/all (Método: GET)</li>
+  <li><strong>Editar informações de um professor</strong> - teacher/[id do professor] (Método: PUT ou POST)</li>
+  <li><strong>Deletar um professor</strong> - teacher/[id do professor]/delete (Método: DELETE ou POST)</li>
+</ul>
+<h3>Turmas</h3>
+<ul>
+  <li><strong>Cadastrar turma</strong> - classes/create (Método: POST)</li>
+  <li><strong>Puxar turma cadastrada</strong> - classroom/[id da turma] (Método: GET)</li>
+  <li><strong>Puxar todas as turmas cadastradas</strong> - classes/all (Método: GET)</li>
+  <li><strong>Editar informações de uma turma</strong> - classroom/[id da turma] (Método: PUT ou POST)</li>
+  <li><strong>Deletar uma turma</strong> - classroom/[id da turma]/delete (Método: DELETE ou POST)</li>
+</ul>
+<h3>Alunos</h3>
+<ul>
+  <li><strong>Cadastrar aluno</strong> - students/create (Método: POST)</li>
+  <li><strong>Puxar aluno cadastrado</strong> - student/[id do aluno] (Método: GET)</li>
+  <li><strong>Puxar todos os alunos cadastrados</strong> - students/all (Método: GET)</li>
+  <li><strong>Editar informações de um aluno</strong> - student/[id do aluno] (Método: PUT ou POST)</li>
+  <li><strong>Deletar um aluno</strong> - student/[id do aluno]/delete (Método: DELETE ou POST)</li>
+</ul>
