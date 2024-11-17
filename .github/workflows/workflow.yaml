@@ -25,17 +25,17 @@ jobs:
       #3, isso fará com que quando um desenvolvedor abrir um pull request, por 
       #exemplo, na branch feature/[Jira-task] o github irá clonar essa branch e 
       #executar os testes nela.
-      -uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       #Instalamos o python na máquina com o setup-python do github actions na versão
       #4. A versão a ser instalada é a 3.10.12.
-      -name: Using python
-       uses: actions/setup-python@v4
-       with:
-        python-version: v3.10.12
+      - name: Using python
+        uses: actions/setup-python@v4
+        with:
+         python-version: v3.10.12
       #Definimos a ação de instalação das dependências que a API utiliza e execução
       #dos testes.
-      -name: run install and test
-       run: |
-        pip install flask
-        pip install Flask-SQLAlchemy
-        python3 -m unittest
+      - name: run install and test
+        run: |
+         pip install flask
+         pip install Flask-SQLAlchemy
+         python3 -m unittest
