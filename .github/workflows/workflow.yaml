@@ -12,8 +12,8 @@ on:
     branches:
       'main'
 
-#Aqui definimos os trabalhos realizados por este workflow, com o nome 
-#continuous-integration, informando que este workflow deve ser executado
+#Aqui definimos os trabalhos realizados por este workflow, com o primeiro 
+#sendo continuous-integration (CI), informando que este workflow deve ser executado
 #em uma máquina ubuntu. 
 jobs:
   continuous-integration:
@@ -39,3 +39,26 @@ jobs:
          pip install flask
          pip install Flask-SQLAlchemy
          python3 -m unittest
+
+  #Definimos o job de deploy (CD)
+  deploy:
+    #O deploy somente será realizado se o CI for bem sucedido
+    needs: continuous-integration
+    runs-on: ubuntu-latest
+
+    steps:
+      #Clonar novamente o repositório
+      - uses: actions/checkout@v3
+
+      #Estou realizando o deploy pelo Render, então definimos o Render API Key 
+      #(definida no Github Secrets) como variável de ambiente.
+      - name: Set render API key
+        run: echo "RENDER_API_KEY=${{ secrets.RENDER_API_KEY }}" >> $GITHUB_ENV
+
+      #Deploy para o Render via API
+      - name: Deploy to render
+        run: |
+          curl -X POST https://api.render.com/v1/services/srv-csqjc4i3esus73ctbj9g/deploys \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"branch": "main"}'
